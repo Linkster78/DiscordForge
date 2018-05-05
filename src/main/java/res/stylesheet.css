@@ -1,0 +1,53 @@
+@import 'https://fonts.googleapis.com/css?family=Open+Sans';
+
+.root {
+	-fx-font-family: 'Open Sans', sans-serif;
+	-fx-background-color: #34495e;
+	-fx-color: #ecf0f1;
+	-fx-font-size: 16px;
+	-fx-text-fill: #ecf0f1;
+}
+
+.label {
+	-fx-text-fill: #ecf0f1;
+}
+
+.jfx-hamburger {
+	-fx-background-color: #222f3e;
+}
+
+.jfx-button {
+	-fx-background-color: #2c3e50;
+	-fx-border-radius: 0;
+	-fx-text-fill: #ecf0f1;
+}
+
+.jfx-password-field {
+	-fx-text-fill: #ecf0f1;
+	-fx-prompt-text-fill: #ecf0f1;
+}
+
+.jfx-text-field {
+	-fx-text-fill: #ecf0f1;
+	-fx-prompt-text-fill: #ecf0f1;
+}
+
+.jfx-toggle-button {
+	-fx-text-fill: #ecf0f1;
+}
+
+.text-area {
+	-fx-text-fill: #2c3e50;
+}
+
+.green {
+	-fx-background-color: #2ecc71;
+}
+
+.red {
+	-fx-background-color: #e74c3c;
+}
+
+.disabled {
+	-fx-background-color: #bdc3c7;
+}
