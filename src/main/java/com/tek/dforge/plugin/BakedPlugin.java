@@ -34,6 +34,7 @@ public class BakedPlugin {
 	}
 	
 	public void disable() {
+		mainClass.disable();
 		saveConfig();
 	}
 	

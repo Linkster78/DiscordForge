@@ -76,6 +76,7 @@ public class DiscordForge {
 		if(!config.containsKey("tertiaryColor")) config.setProperty("tertiaryColor", Reference.TERTIARYCOLOR);
 		if(!config.containsKey("token")) config.setProperty("token", "");
 		if(!config.containsKey("presence")) config.setProperty("presence", "");
+		if(!config.containsKey("prefix")) config.setProperty("prefix", Reference.PREFIX);
 	}
 	
 	public void saveMainConfig() {

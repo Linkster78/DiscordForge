@@ -11,11 +11,13 @@ import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXToggleButton;
 import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
+import com.tek.dforge.bot.lib.commands.ICommandHandler;
 import com.tek.dforge.bot.lib.util.JDAUtil;
 import com.tek.dforge.core.DiscordForge;
 import com.tek.dforge.plugin.BakedPlugin;
 import com.tek.dforge.ui.popup.AlertBox;
 import com.tek.dforge.util.Reference;
+import com.tek.dforge.util.StringUtil;
 
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
@@ -76,7 +78,10 @@ public class MainController {
 	private JFXButton btnBotMenu;
 	
 	@FXML
-	private JFXButton btnModules;
+	private JFXButton btnPlugins;
+	
+	@FXML
+	private JFXButton btnCommands;
 	
 	@FXML
 	private JFXButton btnConfig;
@@ -91,7 +96,10 @@ public class MainController {
     private Pane paneBotMenu;
 	
     @FXML
-    private Pane paneModules;
+    private Pane panePlugins;
+    
+    @FXML
+    private Pane paneCommands;
     
 	@FXML
     private Pane paneConfig;
@@ -148,10 +156,16 @@ public class MainController {
     public JFXListView<BakedPlugin> listPlugins;
     
     @FXML
+    public JFXListView<ICommandHandler> listCommands;
+    
+    @FXML
     public Label lblInfo;
     
     @FXML
     public JFXToggleButton toggleEnabled;
+    
+    @FXML
+    public JFXToggleButton toggleCommandEnabled;
     
     @FXML
     public JFXListView<BakedPlugin> listPlugins1;
@@ -173,6 +187,12 @@ public class MainController {
     
     @FXML
     public VBox paneActions;
+    
+    @FXML
+    public JFXTextField fieldPrefix;
+    
+    @FXML
+    public Label lblCommandInfo;
     
 	@FXML
 	private void initialize() {
@@ -223,6 +243,7 @@ public class MainController {
 			
 			listPlugins.setItems(FXCollections.observableArrayList(DiscordForge.getInstance().getPluginManager().getPlugins()));
 			listPlugins1.setItems(FXCollections.observableArrayList(DiscordForge.getInstance().getPluginManager().getPlugins()));
+			listCommands.setItems(FXCollections.observableArrayList(DiscordForge.getInstance().getDiscordBot().getCommandManager().getCommandHandlers().keySet()));
 		});
 		
 		listPlugins.setCellFactory(new Callback<ListView<BakedPlugin>, ListCell<BakedPlugin>>(){
@@ -265,6 +286,26 @@ public class MainController {
 			}
 		});
 		
+		listCommands.setCellFactory(new Callback<ListView<ICommandHandler>, ListCell<ICommandHandler>>(){
+			@Override
+			public ListCell<ICommandHandler> call(ListView<ICommandHandler> commandHandlerListView){
+				return new ListCell<ICommandHandler>() {
+					@Override
+					protected void updateItem(ICommandHandler item, boolean empty) {
+						super.updateItem(item, empty);
+						
+						setText(empty ? null : item.asString());
+						
+						if(empty) {
+							setStyle("-fx-control-inner-background: #" + DiscordForge.getInstance().getConfig().getProperty("tertiaryColor") + ";");
+						}else {
+							setStyle("-fx-control-inner-background: #" + DiscordForge.getInstance().getConfig().getProperty("secondaryColor") + ";");
+						}
+					}
+				};
+			}
+		});
+		
 		listPlugins.setItems(FXCollections.observableArrayList(DiscordForge.getInstance().getPluginManager().getPlugins()));
 		listPlugins.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		listPlugins.getSelectionModel().selectedItemProperty().addListener(e -> {
@@ -278,12 +319,22 @@ public class MainController {
 			updateOptions(listPlugins1.getSelectionModel().getSelectedItem());
 		});
 		
+		listCommands.setItems(FXCollections.observableArrayList(DiscordForge.getInstance().getDiscordBot().getCommandManager().getCommandHandlers().keySet()));
+		listCommands.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+		listCommands.getSelectionModel().selectedItemProperty().addListener(e -> {
+			updateCommands(listCommands.getSelectionModel().getSelectedItem());
+		});
+		
 		fieldPresence.textProperty().addListener(e -> {
 			DiscordForge.getInstance().getConfig().setProperty("presence", fieldPresence.getText());
 		});
 		
 		fieldToken.textProperty().addListener(e -> {
 			DiscordForge.getInstance().getConfig().setProperty("token", fieldToken.getText());
+		});
+		
+		fieldPrefix.textProperty().addListener(e -> {
+			DiscordForge.getInstance().getConfig().setProperty("prefix", fieldPrefix.getText());
 		});
 		
 		toggleEnabled.selectedProperty().addListener(e -> {
@@ -296,6 +347,16 @@ public class MainController {
 			}
 		});
 		
+		toggleCommandEnabled.selectedProperty().addListener(e -> {
+			ICommandHandler command = listCommands.getSelectionModel().getSelectedItem();
+			
+			if(command == null) {
+				toggleCommandEnabled.setSelected(false);
+			}else {
+				command.setEnabled(toggleCommandEnabled.isSelected());
+			}
+		});
+		
 		colorPrimary.setValue(Color.valueOf(DiscordForge.getInstance().getConfig().getProperty("primaryColor")));
 		colorSecondary.setValue(Color.valueOf(DiscordForge.getInstance().getConfig().getProperty("secondaryColor")));
 		colorTertiary.setValue(Color.valueOf(DiscordForge.getInstance().getConfig().getProperty("tertiaryColor")));
@@ -305,17 +366,20 @@ public class MainController {
 		buildColorPicker(colorTertiary);
 		
 		buildHamburgerAnimations(btnBotMenu, hamburgerWidth);
-		buildHamburgerAnimations(btnModules, hamburgerWidth);
+		buildHamburgerAnimations(btnPlugins, hamburgerWidth);
+		buildHamburgerAnimations(btnCommands, hamburgerWidth);
 		buildHamburgerAnimations(btnConfig, hamburgerWidth);
 		buildHamburgerAnimations(btnSettings, hamburgerWidth);
 		buildHamburgerAnimations(btnInfo, hamburgerWidth);
 		
 		fieldToken.setText(DiscordForge.getInstance().getConfig().getProperty("token"));
 		fieldPresence.setText(DiscordForge.getInstance().getConfig().getProperty("presence"));
+		fieldPrefix.setText(DiscordForge.getInstance().getConfig().getProperty("prefix"));
 		
 		this.panes.put(btnBotMenu, paneBotMenu);
 		this.panes.put(btnConfig, paneConfig);
-		this.panes.put(btnModules, paneModules);
+		this.panes.put(btnPlugins, panePlugins);
+		this.panes.put(btnCommands, paneCommands);
 		this.panes.put(btnSettings, paneSettings);
 		this.panes.put(btnInfo, paneInfo);
 		
@@ -343,6 +407,7 @@ public class MainController {
 		updateInfo(null);
 		updateOptions(null);
 		updateActions(null);
+		updateCommands(null);
 	}
 	
 	public void buildColorPicker(JFXColorPicker colorPicker) {
@@ -382,7 +447,9 @@ public class MainController {
 					pane.setVisible(false);
 				}
 				
-				if(panes.containsKey(button)) panes.get(button).setVisible(true);
+				if(panes.containsKey(button)) {
+					panes.get(button).setVisible(true);
+				}
 			}
 		}
 	}
@@ -397,10 +464,13 @@ public class MainController {
 		}
 		
 		btnPresence.setStyle("-fx-background-color: #" + DiscordForge.getInstance().getConfig().getProperty("secondaryColor") + ";");
+		
 		listPlugins.setStyle("-fx-background-color: #" + DiscordForge.getInstance().getConfig().getProperty("secondaryColor") + ";");
 		listPlugins1.setStyle("-fx-background-color: #" + DiscordForge.getInstance().getConfig().getProperty("secondaryColor") + ";");
+		listCommands.setStyle("-fx-background-color: #" + DiscordForge.getInstance().getConfig().getProperty("secondaryColor") + ";");
 		listPlugins.refresh();
 		listPlugins1.refresh();
+		listCommands.refresh();
 		
 		for(Pane pane : this.panes.values()) {
 			pane.setStyle("-fx-background-color: #" + DiscordForge.getInstance().getConfig().getProperty("primaryColor") + ";");
@@ -445,6 +515,16 @@ public class MainController {
 		if(plugin == null) return;
 		
 		DiscordForge.getInstance().getConfigManager().getLayout(plugin.getMainClass()).display(paneOptions);
+	}
+	
+	public void updateCommands(ICommandHandler command) {
+		if(command == null) {
+			lblCommandInfo.setText("Name: NA\nDescription: NA\nSyntax: NA\nAliases: NA");
+			toggleCommandEnabled.setSelected(false);
+		}else {
+			lblCommandInfo.setText(String.format("Name: %s\nDescription: %s\nSyntax: %s\nAliases: %s", command.getCommand(), command.getDescription(), command.getSyntax(), StringUtil.listToString(command.getAliases(), ", ")));
+			toggleCommandEnabled.setSelected(command.isEnabled());
+		}
 	}
 	
 	public void updateActions(BakedPlugin plugin) {

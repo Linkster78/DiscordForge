@@ -17,7 +17,7 @@ public class GUI extends Application{
 	private static GUI instance;
 	private Stage primaryStage;
 	
-	final int width = 600, height = 394;
+	final int width = 600, height = 457;
 	
 	public static void ilaunch(String[] args) {
 		launch(args);

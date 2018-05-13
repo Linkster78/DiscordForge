@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane fx:id="paneBorder" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="394.0" prefWidth="600.0" stylesheets="@../../../../res/stylesheet.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tek.dforge.ui.MainController">
+<BorderPane fx:id="paneBorder" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="457.0" prefWidth="600.0" stylesheets="@../../../../res/stylesheet.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tek.dforge.ui.MainController">
    <top>
       <HBox prefHeight="79.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
@@ -34,10 +34,11 @@
       <VBox fx:id="paneHamburger" prefHeight="315.0" prefWidth="107.0" BorderPane.alignment="CENTER">
          <children>
             <JFXButton fx:id="btnBotMenu" prefHeight="63.0" prefWidth="107.0" text="Bot Menu" />
-            <JFXButton fx:id="btnModules" prefHeight="63.0" prefWidth="107.0" text="Modules" />
+            <JFXButton fx:id="btnPlugins" prefHeight="63.0" prefWidth="107.0" text="Plugins" />
+            <JFXButton fx:id="btnCommands" prefHeight="63.0" prefWidth="107.0" style="-fx-font-size: 15px;" text="Command" />
             <JFXButton fx:id="btnConfig" prefHeight="63.0" prefWidth="107.0" text="Config" />
             <JFXButton fx:id="btnSettings" prefHeight="63.0" prefWidth="107.0" text="Settings" />
-            <JFXButton fx:id="btnInfo" prefHeight="63.0" prefWidth="107.0" text="Info" />
+            <JFXButton fx:id="btnInfo" prefHeight="63.0" prefWidth="112.0" text="Info" />
          </children>
       </VBox>
    </left>
@@ -46,59 +47,68 @@
          <children>
             <Pane fx:id="paneBotMenu" prefHeight="200.0" prefWidth="200.0" visible="false">
                <children>
-                  <JFXButton fx:id="btnStart" layoutX="14.0" layoutY="267.0" prefHeight="34.0" prefWidth="93.0" styleClass="green" text="Start" />
-                  <JFXButton fx:id="btnStop" layoutX="119.0" layoutY="267.0" prefHeight="34.0" prefWidth="93.0" styleClass="red" text="Stop" />
-                  <JFXPasswordField fx:id="fieldToken" labelFloat="true" layoutX="247.0" layoutY="267.0" prefHeight="34.0" prefWidth="232.0" promptText="Bot Token" />
-                  <JFXTextField fx:id="fieldPresence" labelFloat="true" layoutX="247.0" layoutY="158.0" prefHeight="34.0" prefWidth="233.0" promptText="Bot Presence" />
-                  <JFXButton fx:id="btnPresence" layoutX="247.0" layoutY="199.0" prefHeight="34.0" prefWidth="233.0" text="Update Presence" />
-                  <ImageView fx:id="imageDiscord" fitHeight="190.0" fitWidth="190.0" layoutX="19.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
-                  <StackPane layoutX="15.0" layoutY="209.0" prefHeight="49.0" prefWidth="197.0">
+                  <JFXButton fx:id="btnStart" layoutX="14.0" layoutY="330.0" prefHeight="34.0" prefWidth="93.0" styleClass="green" text="Start" />
+                  <JFXButton fx:id="btnStop" layoutX="119.0" layoutY="330.0" prefHeight="34.0" prefWidth="93.0" styleClass="red" text="Stop" />
+                  <JFXPasswordField fx:id="fieldToken" labelFloat="true" layoutX="247.0" layoutY="330.0" prefHeight="34.0" prefWidth="232.0" promptText="Bot Token" />
+                  <JFXTextField fx:id="fieldPresence" labelFloat="true" layoutX="247.0" layoutY="221.0" prefHeight="34.0" prefWidth="233.0" promptText="Bot Presence" />
+                  <JFXButton fx:id="btnPresence" layoutX="247.0" layoutY="262.0" prefHeight="34.0" prefWidth="233.0" text="Update Presence" />
+                  <ImageView fx:id="imageDiscord" fitHeight="190.0" fitWidth="190.0" layoutX="20.0" layoutY="48.0" pickOnBounds="true" preserveRatio="true" />
+                  <StackPane layoutX="16.0" layoutY="272.0" prefHeight="49.0" prefWidth="197.0">
                      <children>
                         <Label fx:id="lblName" style="-fx-font-size: 22px;" text="NA" />
                      </children></StackPane>
+                  <JFXTextField fx:id="fieldPrefix" labelFloat="true" layoutX="247.0" layoutY="162.0" prefHeight="34.0" prefWidth="232.0" promptText="Bot Prefix" />
                </children>
             </Pane>
-            <Pane fx:id="paneModules" prefHeight="200.0" prefWidth="200.0" visible="false">
+            <Pane fx:id="panePlugins" prefHeight="200.0" prefWidth="200.0" visible="false">
                <children>
                   <JFXButton fx:id="btnReload" layoutX="14.0" layoutY="14.0" prefHeight="34.0" prefWidth="151.0" style="-fx-font-size: 13px;" text="Reload (WIP)" />
-                  <JFXListView fx:id="listPlugins" layoutX="14.0" layoutY="58.0" prefHeight="183.0" prefWidth="152.0" />
+                  <JFXListView fx:id="listPlugins" layoutX="14.0" layoutY="58.0" prefHeight="249.0" prefWidth="152.0" />
                   <Label fx:id="lblInfo" layoutX="178.0" layoutY="14.0" prefHeight="67.0" prefWidth="302.0" text="Info" />
-                  <JFXToggleButton fx:id="toggleEnabled" layoutX="14.0" layoutY="241.0" prefHeight="46.0" prefWidth="152.0" text="Enabled" />
-                  <ScrollPane fx:id="paneScrollAction" layoutX="181.0" layoutY="85.0" prefHeight="218.0" prefWidth="298.0">
+                  <JFXToggleButton fx:id="toggleEnabled" layoutX="14.0" layoutY="302.0" prefHeight="46.0" prefWidth="152.0" text="Enabled" />
+                  <ScrollPane fx:id="paneScrollAction" layoutX="181.0" layoutY="85.0" prefHeight="280.0" prefWidth="298.0">
                      <content>
-                        <AnchorPane fx:id="pa" prefHeight="223.0" prefWidth="275.0">
+                        <AnchorPane fx:id="pa" prefHeight="280.0" prefWidth="299.0">
                            <children>
-                              <VBox fx:id="paneActions" prefHeight="284.0" prefWidth="260.0" />
+                              <VBox fx:id="paneActions" prefHeight="281.0" prefWidth="299.0" />
                            </children>
                         </AnchorPane>
                      </content>
                   </ScrollPane>
-               </children></Pane>
+               </children>
+            </Pane>
+            <Pane fx:id="paneCommands" prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <JFXListView fx:id="listCommands" layoutX="14.0" layoutY="15.0" prefHeight="291.0" prefWidth="152.0" />
+                  <JFXToggleButton fx:id="toggleCommandEnabled" layoutX="14.0" layoutY="306.0" prefHeight="62.0" prefWidth="153.0" text="Enabled" />
+                  <Label fx:id="lblCommandInfo" layoutX="177.0" layoutY="15.0" prefHeight="92.0" prefWidth="301.0" style="-fx-font-size: 16px;" text="Command Info" />
+               </children>
+            </Pane>
             <Pane fx:id="paneConfig" prefHeight="200.0" prefWidth="200.0" visible="false">
                <children>
-                  <JFXListView fx:id="listPlugins1" layoutX="14.0" layoutY="15.0" prefHeight="286.0" prefWidth="152.0" />
-                  <ScrollPane fx:id="paneScrollConfig" layoutX="179.0" layoutY="15.0" prefHeight="286.0" prefWidth="299.0">
+                  <JFXListView fx:id="listPlugins1" layoutX="14.0" layoutY="15.0" prefHeight="351.0" prefWidth="152.0" />
+                  <ScrollPane fx:id="paneScrollConfig" layoutX="179.0" layoutY="15.0" prefHeight="350.0" prefWidth="299.0">
                      <content>
-                        <AnchorPane fx:id="po" prefHeight="284.0" prefWidth="275.0">
+                        <AnchorPane fx:id="po" prefHeight="350.0" prefWidth="299.0">
                            <children>
-                              <VBox fx:id="paneOptions" prefHeight="284.0" prefWidth="260.0" />
+                              <VBox fx:id="paneOptions" prefHeight="350.0" prefWidth="300.0" />
                            </children></AnchorPane>
                      </content></ScrollPane>
                </children></Pane>
             <Pane fx:id="paneSettings" prefHeight="200.0" prefWidth="200.0" visible="false">
                <children>
-                  <Label fx:id="lblPrimary" layoutX="13.0" layoutY="19.0" text="Primary Color" />
-                  <Label fx:id="lblSecondary" layoutX="14.0" layoutY="54.0" text="Secondary Color" />
-                  <Label fx:id="lblTertiary" layoutX="14.0" layoutY="89.0" text="Tertiary Color" />
+                  <Label layoutX="13.0" layoutY="19.0" text="Primary Color" />
+                  <Label layoutX="14.0" layoutY="54.0" text="Secondary Color" />
+                  <Label layoutX="14.0" layoutY="89.0" text="Tertiary Color" />
                   <JFXColorPicker fx:id="colorPrimary" layoutX="146.0" layoutY="13.0" />
                   <JFXColorPicker fx:id="colorSecondary" layoutX="146.0" layoutY="48.0" />
                   <JFXColorPicker fx:id="colorTertiary" layoutX="146.0" layoutY="83.0" />
                </children>
             </Pane>
-            <Pane fx:id="paneInfo" prefHeight="200.0" prefWidth="200.0">
+            <Pane fx:id="paneInfo" prefHeight="200.0" prefWidth="200.0" visible="false">
                <children>
-                  <Label layoutX="121.0" layoutY="147.0" text="Developed by RedstoneTek ~ Link" />
-                  <Label layoutX="170.0" layoutY="169.0" text="Discord &gt; Link#3262" />
+                  <Label layoutX="121.0" layoutY="167.0" text="Developed by RedstoneTek ~ Link" />
+                  <Label layoutX="170.0" layoutY="189.0" text="Discord &gt; Link#3262" />
                </children>
             </Pane>
          </children>

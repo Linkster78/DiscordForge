@@ -28,4 +28,9 @@ public interface IForgePlugin {
 	 */
 	public void enable();
 	
+	/*
+	 * Takes care of disabling everything
+	 */
+	public void disable();
+	
 }
